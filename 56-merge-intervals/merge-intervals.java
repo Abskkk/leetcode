@@ -4,13 +4,13 @@ class Solution {
         List<int[]> res = new ArrayList<>();
         int prevStart = intervals[0][0], prevEnd = intervals[0][1];
         for (int i = 1; i < intervals.length; i++) {
-            int currStart = intervals[i][0], currEnd = intervals[i][1];
-            if (currStart > prevEnd) {
-                res.add(new int[]{prevStart, prevEnd});
-                prevStart = currStart;
-                prevEnd = currEnd;
+            int start = intervals[i][0], end = intervals[i][1];
+            if (start <= prevEnd) {
+                prevEnd = Math.max(prevEnd, end);
             } else {
-                prevEnd = Math.max(prevEnd, currEnd);
+                res.add(new int[]{prevStart, prevEnd});
+                prevStart = start;
+                prevEnd = end;
             }
         }
         res.add(new int[]{prevStart, prevEnd});
