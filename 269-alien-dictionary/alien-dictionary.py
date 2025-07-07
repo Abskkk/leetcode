@@ -13,15 +13,20 @@ class Solution:
                         graph[word1[i]].add(word2[i])
                         indegree[word2[i]] += 1
                     break
-        queue = deque([ch for ch in indegree if indegree[ch] == 0])
+        visited = {}
         res = []
-        while queue:
-            curr = queue.popleft()
-            res.append(curr)
-            for ch in graph[curr]:
-                indegree[ch] -= 1
-                if indegree[ch] == 0:
-                    queue.append(ch)
-        if len(indegree) > len(res):
-            return ""
+        def dfs(ch):
+            if ch in visited:
+                return visited[ch]
+            visited[ch] = True
+            for neighbor in graph[ch]:
+                if dfs(neighbor):
+                    return True
+            visited[ch] = False
+            res.append(ch)
+            return False
+        for ch in graph:
+            if dfs(ch):
+                return ""
+        res.reverse()
         return ''.join(res)
